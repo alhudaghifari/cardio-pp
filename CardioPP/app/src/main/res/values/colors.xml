@@ -3,4 +3,23 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Primary Code-->
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="green_splash">#0faf45</color>
+    <color name="silver">#bcbdbd</color>
+    <color name="grey">#414141</color>
+    <color name="greytransparant">#80414141</color>
+    <color name="bluestrong">#035764</color>
+    <color name="blackandblue">#00343d</color>
+
+    <color name="buttoncolor">#dce7f2</color>
+    <color name="bluebg">#497dac</color>
+    <color name="bluesky">#a0cdf5</color>
+
+    <color name="redkuat">#b90000</color>
+
+    <color name="whitetransparant">#80ffffff</color>
+    <color name="whitetransparant2">#00ffffff</color>
 </resources>
