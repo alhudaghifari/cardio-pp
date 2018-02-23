@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "580763969599",
+    "firebase_url": "https://cardiopp-aae0d.firebaseio.com",
+    "project_id": "cardiopp-aae0d",
+    "storage_bucket": "cardiopp-aae0d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580763969599:android:2aee9fcbf1f16210",
+        "android_client_info": {
+          "package_name": "com.urbannightdev.cardiopp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580763969599-q9sp4qqdqn0ae7i2ke0vpl6jkb6o7vsk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.urbannightdev.cardiopp",
+            "certificate_hash": "e794debf129c8915e2efcf32b04699268c6d838d"
+          }
+        },
+        {
+          "client_id": "580763969599-59pihrtq8gdgop60u2spcmcb3p0rt6qo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBC3U-JjIxpsMzImrRw-QqlOR0KrmlY8qY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580763969599-59pihrtq8gdgop60u2spcmcb3p0rt6qo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

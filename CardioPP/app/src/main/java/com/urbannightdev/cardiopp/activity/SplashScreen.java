@@ -69,6 +69,8 @@ public class SplashScreen extends AppCompatActivity {
                 case GOTOLOGINPAGE:
                     //remove SplashScreen from view
                     splash_mid.setVisibility(View.GONE);
+                    intentpindah = new Intent(SplashScreen.this, LoginActivity.class);
+                    SplashScreen.this.startActivity(intentpindah);
                     SplashScreen.this.finish();
                     break;
                 case GOTOHOMEPAGE:

@@ -58,6 +58,6 @@ public class SessionManager extends Application {
      * @return boolean login
      */
     public boolean isLoggedIn() {
-        return pref.getBoolean(KEY_IS_LOGGED_IN, true);
+        return pref.getBoolean(KEY_IS_LOGGED_IN, false);
     }
 }

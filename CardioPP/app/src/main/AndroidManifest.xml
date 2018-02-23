@@ -20,7 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.HomePage"
+        <activity
+            android:name=".activity.HomePage"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activity.LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activity.RegistrationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>

@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">Cardio PP</string>
+
+    <!--register-->
+    <string name="accountcreated">Account Created</string>
+
+    <!-- Strings related to login and registration -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="signin">Sign In</string>
+    <string name="signup">Register</string>
+    <string name="createaccount">Create Account</string>
+    <string name="penderita">Penderita</string>
+    <string name="partner">Partner</string>
+    <string name="donthaveaccount">Don\'t have any account ? </string>
+
+    <!--parner-->
+    <string name="prompt_name_partner">Nama Partner</string>
+    <string name="prompt_phone">Telepon</string>
+    <string name="add_partner">Tambah partner</string>
+
+    <!--Bluetooth-->
+    <string name="search">Search</string>
+    <string name="listbluetooth">List Bluetooth</string>
+    <string name="status_blute">Bluetooth Status</string>
+    <string name="tap_search">Tap search button to find Bluetooth device</string>
+    <string name="tap_connect">Tap bluetooth list to connect</string>
+    <string name="available_device">Available device</string>
+    <string name="paired_device">Paired device</string>
+    <string name="warning_blute">Your bluetooth is off. Please switch on your bluetooth.</string>
+    <string name="please_blute">Please switch on your bluetooth</string>
+
 </resources>
