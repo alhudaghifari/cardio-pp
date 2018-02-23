@@ -3,10 +3,12 @@ package com.urbannightdev.cardiopp.activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -59,20 +61,24 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     DatabaseReference databaseUser;
 
-    private AlertDialog dialog;
-
     private UserLoggedManager userLoggedManager;
 
+    private ActionBar aksibar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setBackgroundColor(getResources().getColor(R.color.grey));
+        myToolbar.setBackgroundColor(getResources().getColor(R.color.redkuat));
         myToolbar.setTitleTextColor(getResources().getColor(R.color.white));
         setSupportActionBar(myToolbar);
 
         ButterKnife.bind(this);
+
+
+        aksibar = RegistrationActivity.this.getSupportActionBar();
+        assert aksibar != null;
+        aksibar.setDisplayHomeAsUpEnabled(true);
 
         generateDataForm();
 
@@ -88,6 +94,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
 //        dialog = new SpotsDialog(RegistrationActivity.this, "Loading");
 //        dialog.setCancelable(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                RegistrationActivity.this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void generateDataForm() {
@@ -122,12 +138,10 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void registerUser() {
-        dialog.show();
-        encryptPassword();
+//        encryptPassword();
         createAuthenticationFirebase();
         createDatabaseFirebase();
         saveUserToSqliteDb();
-        dialog.dismiss();
         showToast("sukses");
     }
 
