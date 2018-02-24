@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,10 +26,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,14 +57,20 @@ import butterknife.ButterKnife;
 
 public class HomePage extends AppCompatActivity {
 
-    @BindView(R.id.rellay_btn_device)
-    RelativeLayout rellayBtnDevice;
-    @BindView(R.id.rellay_btn_partner)
-    RelativeLayout rellayBtnPartner;
     @BindView(R.id.rellay_device)
     RelativeLayout rellayDevice;
     @BindView(R.id.linlay_main)
     LinearLayout linlayMain;
+    @BindView(R.id.ivGraph)
+    ImageView ivGraph;
+    @BindView(R.id.ivBluetooth)
+    ImageView ivBluetooth;
+    @BindView(R.id.ivSubscription)
+    ImageView ivSubscription;
+    @BindView(R.id.scrollview)
+    ScrollView scrollViewGraph;
+    @BindView(R.id.linlay_toolbar)
+    LinearLayout linlayToolbar;
 
     private Toolbar myToolbar;
     private ActionBar aksibar;
@@ -83,6 +93,7 @@ public class HomePage extends AppCompatActivity {
     private Set<BluetoothDevice> pairedDevices;
     private ArrayAdapter mAdapter;
     private ArrayAdapter mAdapterPair;
+    private ArrayAdapter mAdapterSaranKesehatan;
     private Handler bluetoothIn;
 
     private String address = "";
@@ -93,6 +104,7 @@ public class HomePage extends AppCompatActivity {
 
     private ArrayList mArrayListPaired;
     private ArrayList mArrayListSearched;
+    private ArrayList arrayListSaranKesehatan;
     private ProgressDialog progress;
 
     private LinearLayout layoutwarning;
@@ -100,6 +112,7 @@ public class HomePage extends AppCompatActivity {
     private Button btnSearchBluetooth;
     private ListView pairedDevicelist;
     private ListView searchedDevicelist;
+    private ListView listViewSaranKesehatan;
     private TextView bluetoothTextInfo;
     private ProgressBar spinner;
 
@@ -133,6 +146,8 @@ public class HomePage extends AppCompatActivity {
         inisialisasiDataBluetoothAwal();
         checkBluetoothAvailability();
         initializeListener();
+
+        initializeDataSaranKesehatan();
 
         visualizeHistogram();
     }
@@ -210,13 +225,28 @@ public class HomePage extends AppCompatActivity {
     }
 
     private void initializeListener() {
-        rellayBtnDevice.setOnClickListener(new View.OnClickListener() {
+        ivGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                linlayMain.setVisibility(View.GONE);
+                scrollViewGraph.setVisibility(View.VISIBLE);
+                rellayDevice.setVisibility(View.GONE);
+                linlayToolbar.setBackgroundColor(Color.WHITE);
+                ivGraph.setImageDrawable(getResources().getDrawable(R.drawable.icons8linechart48_clicked, null));
+                ivBluetooth.setImageDrawable(getResources().getDrawable(R.drawable.icons8_bluetooth_48, null));
+                ivSubscription.setImageDrawable(getResources().getDrawable(R.drawable.icons8_user_48, null));
+            }
+        });
+
+        ivBluetooth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scrollViewGraph.setVisibility(View.GONE);
                 rellayDevice.setVisibility(View.VISIBLE);
-                myToolbar.setVisibility(View.VISIBLE);
+                linlayToolbar.setBackgroundColor(Color.parseColor("#b90000"));
                 pairedDevicesList();
+                ivGraph.setImageDrawable(getResources().getDrawable(R.drawable.icons8_line_chart_48_white, null));
+                ivBluetooth.setImageDrawable(getResources().getDrawable(R.drawable.icons8_bluetooth_48_clicked, null));
+                ivSubscription.setImageDrawable(getResources().getDrawable(R.drawable.icons8_user_48_white, null));
             }
         });
 
@@ -266,6 +296,7 @@ public class HomePage extends AppCompatActivity {
         btnSearchBluetooth = (Button) findViewById(R.id.btnSearch);
         pairedDevicelist = (ListView) findViewById(R.id.listViewPair);
         searchedDevicelist = (ListView) findViewById(R.id.listViewSearch);
+        listViewSaranKesehatan = (ListView) findViewById(R.id.listSaranKesehatan);
         bluetoothTextInfo = (TextView) findViewById(R.id.blute_text_info);
         aSwitch = (Switch) findViewById(R.id.switch_blute);
         spinner = (ProgressBar) findViewById(R.id.progressbar);
@@ -361,6 +392,19 @@ public class HomePage extends AppCompatActivity {
             }
         }
     };
+
+    private void initializeDataSaranKesehatan() {
+        arrayListSaranKesehatan = new ArrayList();
+        arrayListSaranKesehatan.add("Halo, aku Dr. Pepe, personal assistant heart care anda.");
+        arrayListSaranKesehatan.add("Disini aku bakalan kasih saran seputar kondisi jantung anda");
+        arrayListSaranKesehatan.add("Kita akan membantu mengetahui kondisimu melalui ECG yaa");
+        arrayListSaranKesehatan.add("Cintai jantungmu, sayangi hidup kita :)");
+
+
+        mAdapterSaranKesehatan = new ArrayAdapter(HomePage.this, android.R.layout.simple_list_item_1, arrayListSaranKesehatan);
+        listViewSaranKesehatan.setAdapter(mAdapterSaranKesehatan);
+        listViewSaranKesehatan.setFocusable(false);
+    }
 
     /**
      * method ini untuk menampilkan bluetooth yang telah di pairing sebelumnya
