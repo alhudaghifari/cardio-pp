@@ -56,65 +56,57 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollview"
+    <LinearLayout
+        android:id="@+id/linlay_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:visibility="visible">
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal"
+            android:text="89 BMP"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/redkuat"/>
+
         <LinearLayout
-            android:id="@+id/linlay_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barchart"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:visibility="visible"/>
+            android:background="@color/redkuat"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center_horizontal"
-                android:text="89 BMP"
-                android:textSize="20sp"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/redkuat"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Saran kesehatan : "
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_title"
+                android:layout_marginLeft="15dp"/>
 
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_numbers"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/redkuat"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Saran kesehatan : "
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_title"
-                    android:layout_marginLeft="15dp"/>
-
-                <ListView
-                    android:id="@+id/listSaranKesehatan"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginTop="@dimen/dp12" />
-
-            </LinearLayout>
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:fadingEdge="none"
+                android:scrollbars="vertical"
+                android:visibility="visible"/>
 
         </LinearLayout>
 
-    </ScrollView>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rellay_device"
@@ -281,5 +273,74 @@
         </LinearLayout>
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linlayProfil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="15dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/man"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/tvNamaUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wright John"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="wright@john.com"
+            android:textColor="@color/greymuda"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvSaldo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saldo : Rp. 1.000.000"
+            android:textColor="@color/blackandblue"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:id="@+id/tvSisaSubscribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sisa subscribe : 23 hari"
+            android:textColor="@color/blackandblue"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="22sp"/>
+
+        <Button
+            android:id="@+id/btnSubscribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="40dp"
+            android:background="@color/redkuat"
+            android:text="Renew Subscribtion"/>
+
+    </LinearLayout>
 
 </LinearLayout>

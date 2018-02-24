@@ -71,10 +71,10 @@ public class HomePage extends AppCompatActivity {
     ImageView ivBluetooth;
     @BindView(R.id.ivSubscription)
     ImageView ivSubscription;
-    @BindView(R.id.scrollview)
-    ScrollView scrollViewGraph;
     @BindView(R.id.linlay_toolbar)
     LinearLayout linlayToolbar;
+    @BindView(R.id.linlayProfil)
+    LinearLayout linlayProfil;
 
     private Toolbar myToolbar;
     private ActionBar aksibar;
@@ -116,7 +116,6 @@ public class HomePage extends AppCompatActivity {
     private Button btnSearchBluetooth;
     private ListView pairedDevicelist;
     private ListView searchedDevicelist;
-    private ListView listViewSaranKesehatan;
     private TextView bluetoothTextInfo;
     private ProgressBar spinner;
 
@@ -238,8 +237,9 @@ public class HomePage extends AppCompatActivity {
         ivGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scrollViewGraph.setVisibility(View.VISIBLE);
+                linlayMain.setVisibility(View.VISIBLE);
                 rellayDevice.setVisibility(View.GONE);
+                linlayProfil.setVisibility(View.GONE);
                 linlayToolbar.setBackgroundColor(Color.WHITE);
                 ivGraph.setImageDrawable(getResources().getDrawable(R.drawable.icons8linechart48_clicked, null));
                 ivBluetooth.setImageDrawable(getResources().getDrawable(R.drawable.icons8_bluetooth_48, null));
@@ -250,13 +250,26 @@ public class HomePage extends AppCompatActivity {
         ivBluetooth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scrollViewGraph.setVisibility(View.GONE);
+                linlayMain.setVisibility(View.GONE);
                 rellayDevice.setVisibility(View.VISIBLE);
                 linlayToolbar.setBackgroundColor(Color.parseColor("#b90000"));
                 pairedDevicesList();
                 ivGraph.setImageDrawable(getResources().getDrawable(R.drawable.icons8_line_chart_48_white, null));
                 ivBluetooth.setImageDrawable(getResources().getDrawable(R.drawable.icons8_bluetooth_48_clicked, null));
                 ivSubscription.setImageDrawable(getResources().getDrawable(R.drawable.icons8_user_48_white, null));
+            }
+        });
+
+        ivSubscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                linlayMain.setVisibility(View.GONE);
+                rellayDevice.setVisibility(View.GONE);
+                linlayProfil.setVisibility(View.VISIBLE);
+                linlayToolbar.setBackgroundColor(Color.WHITE);
+                ivGraph.setImageDrawable(getResources().getDrawable(R.drawable.icons8linechart48, null));
+                ivBluetooth.setImageDrawable(getResources().getDrawable(R.drawable.icons8_bluetooth_48, null));
+                ivSubscription.setImageDrawable(getResources().getDrawable(R.drawable.icons8_user_48_clicked, null));
             }
         });
 
@@ -306,7 +319,6 @@ public class HomePage extends AppCompatActivity {
         btnSearchBluetooth = (Button) findViewById(R.id.btnSearch);
         pairedDevicelist = (ListView) findViewById(R.id.listViewPair);
         searchedDevicelist = (ListView) findViewById(R.id.listViewSearch);
-        listViewSaranKesehatan = (ListView) findViewById(R.id.listSaranKesehatan);
         bluetoothTextInfo = (TextView) findViewById(R.id.blute_text_info);
         aSwitch = (Switch) findViewById(R.id.switch_blute);
         spinner = (ProgressBar) findViewById(R.id.progressbar);
@@ -404,8 +416,18 @@ public class HomePage extends AppCompatActivity {
     };
 
     private void initializeDataSaranKesehatan() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.rv_numbers);
         mListSaranKesehatanModels = new ArrayList<>();
-//        SaranKesehatanModel saranKesehatanModel = new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat",);
+        SaranKesehatanModel saranKesehatanModel1 =
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+        SaranKesehatanModel saranKesehatanModel2 =
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+        SaranKesehatanModel saranKesehatanModel3 =
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+
+        mListSaranKesehatanModels.add(saranKesehatanModel1);
+        mListSaranKesehatanModels.add(saranKesehatanModel2);
+        mListSaranKesehatanModels.add(saranKesehatanModel3);
 
         final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(HomePage.this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
