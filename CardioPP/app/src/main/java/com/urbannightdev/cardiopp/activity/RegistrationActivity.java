@@ -64,6 +64,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private UserLoggedManager userLoggedManager;
 
     private ActionBar aksibar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

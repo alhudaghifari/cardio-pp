@@ -37,7 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_top"
-                android:background="@drawable/roundd"
                 android:padding="8dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
@@ -64,7 +63,6 @@
                 android:id="@+id/masked"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/roundd"
                 android:padding="8dp"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 

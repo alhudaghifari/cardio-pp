@@ -9,109 +9,280 @@
     tools:context="com.urbannightdev.cardiopp.activity.HomePage">
 
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="5dp">
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icons8linechart48_clicked"
-            android:adjustViewBounds="true"/>
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/icons8ecg48"
-            android:adjustViewBounds="true"/>
-
-    </LinearLayout>
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/graf"
-        android:layout_marginTop="15dp"
-        android:layout_weight="1"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <LinearLayout
+        android:id="@+id/linlay_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:visibility="visible"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Saran kesehatan : "
-            android:textColor="@color/grey"
-            android:textSize="@dimen/text_title"
-            android:layout_marginLeft="15dp"/>
+            android:gravity="center_horizontal"
+            android:text="89 BMP"
+            android:textSize="20sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/redkuat"/>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/redkuat"
-        android:orientation="horizontal">
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/iv_device"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_centerInParent="true"
-                android:src="@drawable/icons8_bracelet"/>
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Device"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_centerInParent="true"
-                android:layout_below="@id/iv_device"/>
+                android:text="Saran kesehatan : "
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_title"
+                android:layout_marginLeft="15dp"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/redkuat"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/iv_partner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_centerInParent="true"
-                android:src="@drawable/icons8_trust"/>
+            <RelativeLayout
+                android:id="@+id/rellay_btn_device"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Partner"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_centerInParent="true"
-                android:layout_below="@id/iv_partner"/>
+                <ImageView
+                    android:id="@+id/iv_device"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icons8_bracelet"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Device"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/iv_device"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rellay_btn_partner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_partner"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/icons8_trust"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Partner"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_centerInParent="true"
+                    android:layout_below="@id/iv_partner"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rellay_device"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/silver"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/linearstatusblute"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearwarning"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/pink">
+
+                <TextView
+                    android:id="@+id/textwarning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/warning_blute"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp14"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativelayoutstatusblute"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/statusblute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/status_blute"
+                    android:textStyle="bold"
+                    android:textColor="@color/redkuat"
+                    android:textSize="@dimen/sp18"/>
+
+                <Switch
+                    android:id="@+id/switch_blute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlayoutbluetooth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/linearstatusblute">
+
+            <TextView
+                android:id="@+id/blute_text_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/redkuat"
+                android:text="@string/paired_device"/>
+
+            <View
+                android:gravity="center_horizontal|center_vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/silver" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/relatif_layout_blute"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/linearlayoutbluetooth"
+            android:layout_above="@+id/mLlayoutBottomButtons" >
+
+            <ListView
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/dp12"
+                android:id="@+id/listViewPair"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp12">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/redkuat"
+                        android:text="@string/available_device"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressbar"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true" />
+
+                </RelativeLayout>
+
+                <View
+                    android:gravity="center_horizontal|center_vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/silver" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listViewSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_marginTop="@dimen/dp12"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/mLlayoutBottomButtons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:background="@color/redkuat"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

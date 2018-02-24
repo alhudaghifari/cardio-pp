@@ -28,12 +28,11 @@
             android:layout_marginLeft="@dimen/dp40"
             android:layout_marginRight="@dimen/dp40"
             android:layout_gravity="center"
-            android:background="@color/silver"
             android:gravity="center">
 
             <ImageView
                 android:layout_width="180dp"
-                android:layout_height="100dp"
+                android:layout_height="90dp"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="center"
