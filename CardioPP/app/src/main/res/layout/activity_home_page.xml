@@ -51,7 +51,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/icons8_magazine48"
+            android:src="@drawable/icons8_user_48"
             android:adjustViewBounds="true"/>
 
     </LinearLayout>
