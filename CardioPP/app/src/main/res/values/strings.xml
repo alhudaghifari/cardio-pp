@@ -35,5 +35,6 @@
     <string name="paired_device">Paired device</string>
     <string name="warning_blute">Your bluetooth is off. Please switch on your bluetooth.</string>
     <string name="please_blute">Please switch on your bluetooth</string>
+    <string name="title_activity_hospital_maps">Map</string>
 
 </resources>

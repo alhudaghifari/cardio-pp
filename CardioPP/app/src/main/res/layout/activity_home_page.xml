@@ -54,6 +54,16 @@
             android:src="@drawable/icons8_user_48"
             android:adjustViewBounds="true"/>
 
+        <ImageView
+            android:id="@+id/ivMaps"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/maps"
+            android:adjustViewBounds="true"/>
+
     </LinearLayout>
 
     <LinearLayout

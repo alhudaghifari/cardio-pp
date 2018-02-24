@@ -14,18 +14,19 @@
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@color/redkuat"
         app:cardCornerRadius="0dp"
         app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        app:contentPaddingBottom="8dp"
-        app:contentPaddingLeft="14dp"
-        app:contentPaddingRight="14dp"
-        app:contentPaddingTop="14dp">
+        app:cardUseCompatPadding="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/roundd"
+            android:paddingBottom="14dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="14dp"
             android:orientation="vertical">
 
             <LinearLayout
