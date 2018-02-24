@@ -17,6 +17,8 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -42,6 +44,8 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.urbannightdev.cardiopp.Constant;
 import com.urbannightdev.cardiopp.R;
+import com.urbannightdev.cardiopp.adapter.RecyclerSaranKesehatan;
+import com.urbannightdev.cardiopp.model.SaranKesehatanModel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -122,6 +126,12 @@ public class HomePage extends AppCompatActivity {
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
     /** BLUETOOTH PAGE **/
+
+
+    RecyclerView mRecyclerView;
+    private RecyclerSaranKesehatan mRecyclerSaranKesehatan;
+
+    private List<SaranKesehatanModel> mListSaranKesehatanModels;
 
     private BarChart barChart;
 
@@ -394,16 +404,15 @@ public class HomePage extends AppCompatActivity {
     };
 
     private void initializeDataSaranKesehatan() {
-        arrayListSaranKesehatan = new ArrayList();
-        arrayListSaranKesehatan.add("Halo, aku Dr. Pepe, personal assistant heart care anda.");
-        arrayListSaranKesehatan.add("Disini aku bakalan kasih saran seputar kondisi jantung anda");
-        arrayListSaranKesehatan.add("Kita akan membantu mengetahui kondisimu melalui ECG yaa");
-        arrayListSaranKesehatan.add("Cintai jantungmu, sayangi hidup kita :)");
+        mListSaranKesehatanModels = new ArrayList<>();
+//        SaranKesehatanModel saranKesehatanModel = new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat",);
 
+        final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(HomePage.this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
 
-        mAdapterSaranKesehatan = new ArrayAdapter(HomePage.this, android.R.layout.simple_list_item_1, arrayListSaranKesehatan);
-        listViewSaranKesehatan.setAdapter(mAdapterSaranKesehatan);
-        listViewSaranKesehatan.setFocusable(false);
+        mRecyclerSaranKesehatan = new RecyclerSaranKesehatan(HomePage.this, mListSaranKesehatanModels);
+
+        mRecyclerView.setAdapter(mRecyclerSaranKesehatan);
     }
 
     /**
