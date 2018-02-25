@@ -1,7 +1,10 @@
 package com.urbannightdev.cardiopp.activity.maps;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -104,27 +107,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-6.915, 107.61);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12.0f));
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    1);
-//            return;
-//        }
-//
-//        Log.d("MASPACTIVITY", "on map ready");
-//
-////        getLocationPermission();
+//        LatLng sydney = new LatLng(-6.915, 107.61);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 12.0f));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            return;
+        }
+
+        mMap.setMyLocationEnabled(true);
+
+        Log.d("MASPACTIVITY", "on map ready");
+
+//        getLocationPermission();
 ////
 ////        updateLocationUI();
 ////
 ////        getDeviceLocation();
 //
-//        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-//        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        new LandmarkMapping().execute(location);
+        LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        new LandmarkMapping().execute(location);
     }
 
 
