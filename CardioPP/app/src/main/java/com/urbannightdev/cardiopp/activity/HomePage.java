@@ -38,12 +38,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.gson.Gson;
 import com.urbannightdev.cardiopp.Constant;
 import com.urbannightdev.cardiopp.R;
+import com.urbannightdev.cardiopp.activity.maps.MapsActivity;
 import com.urbannightdev.cardiopp.adapter.RecyclerSaranKesehatan;
 import com.urbannightdev.cardiopp.model.SaranKesehatanModel;
 import com.urbannightdev.cardiopp.model.TMoneyModel;
@@ -151,7 +156,7 @@ public class HomePage extends AppCompatActivity {
 
     private List<SaranKesehatanModel> mListSaranKesehatanModels;
 
-    private BarChart barChart;
+    private LineChart barChart;
 
     private boolean flagCheckSaldo;
 
@@ -173,7 +178,7 @@ public class HomePage extends AppCompatActivity {
         assert aksibar != null;
         aksibar.setDisplayHomeAsUpEnabled(true);
 
-        barChart = (BarChart) findViewById(R.id.barchart);
+        barChart = (LineChart) findViewById(R.id.barchart);
 
         inisialisasiDataBluetoothAwal();
         checkBluetoothAvailability();
@@ -324,7 +329,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     private void visualizeHistogram() {
-        List<BarEntry> barEntries = new ArrayList<>();
+        List<Entry> Entries = new ArrayList<>();
 
         Random rand = new Random();
 
@@ -337,14 +342,43 @@ public class HomePage extends AppCompatActivity {
 
             if (mod%2 == 1)
                 n *= -1;
-            barEntries.add(new BarEntry(i, n));
+            Entries.add(new BarEntry(i, n));
         }
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "ECG");
+        LineDataSet barDataSet = new LineDataSet(Entries, "ECG");
 
         barDataSet.setColor(Color.RED);
 
-        BarData barData = new BarData(barDataSet);
+        LineData barData = new LineData(barDataSet);
+
+        barChart.setData(barData);
+
+        barChart.invalidate();
+
+    }
+
+    private void visualizeHistogram2() {
+        List<Entry> Entries = new ArrayList<>();
+
+        Random rand = new Random();
+
+        int n;
+        int mod;
+
+        for (int i=0;i<100;i++) {
+            n = rand.nextInt(30) + 1;
+            mod = rand.nextInt(10) + 1;
+
+            if (mod%2 == 1)
+                n *= -1;
+            Entries.add(new BarEntry(i, n));
+        }
+
+        LineDataSet barDataSet = new LineDataSet(Entries, "ECG");
+
+        barDataSet.setColor(Color.RED);
+
+        LineData barData = new LineData(barDataSet);
 
         barChart.setData(barData);
 
@@ -356,6 +390,7 @@ public class HomePage extends AppCompatActivity {
         ivMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                visualizeHistogram2();
                 Intent intent = new Intent(HomePage.this, MapsActivity.class);
                 startActivity(intent);
             }
