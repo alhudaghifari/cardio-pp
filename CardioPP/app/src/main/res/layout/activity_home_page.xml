@@ -294,62 +294,96 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/man"
-            android:layout_gravity="center_horizontal"
-            />
-
-        <TextView
-            android:id="@+id/tvNamaUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wright John"
-            android:textColor="@color/black"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="20sp"/>
-
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="wright@john.com"
-            android:textColor="@color/greymuda"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/tvSaldo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Saldo : Rp. 1.000.000"
-            android:textColor="@color/blackandblue"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="22sp"/>
-
-        <TextView
-            android:id="@+id/tvSisaSubscribe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sisa subscribe : 23 hari"
-            android:textColor="@color/blackandblue"
-            android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="22sp"/>
-
-        <Button
-            android:id="@+id/btnSubscribe"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginLeft="40dp"
-            android:background="@color/redkuat"
-            android:text="Renew Subscribtion"/>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@drawable/man"
+                    android:layout_gravity="center_horizontal"
+                    />
+
+                <TextView
+                    android:id="@+id/tvNamaUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wright John"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="wright@john.com"
+                    android:textColor="@color/greymuda"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/edittexttoken"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/redkuat"
+                    android:padding="10dp"
+                    />
+
+                <Button
+                    android:id="@+id/btnCheckSaldo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Check Saldo"/>
+
+                <Button
+                    android:id="@+id/btnSetSaldo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Set Saldo"/>
+
+                <TextView
+                    android:id="@+id/tvSaldo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saldo : Rp. 0"
+                    android:textColor="@color/blackandblue"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22sp"/>
+
+                <TextView
+                    android:id="@+id/tvSisaSubscribe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sisa subscribe : 23 hari"
+                    android:textColor="@color/blackandblue"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="22sp"/>
+
+                <Button
+                    android:id="@+id/btnSubscribe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginLeft="40dp"
+                    android:background="@color/redkuat"
+                    android:text="Renew Subscribtion"/>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

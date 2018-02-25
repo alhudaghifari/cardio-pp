@@ -1,7 +1,7 @@
 package com.urbannightdev.cardiopp.activity;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,10 +21,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.urbannightdev.cardiopp.R;
+import com.urbannightdev.cardiopp.helper.AmbilToken;
 import com.urbannightdev.cardiopp.helper.SQLiteHandler;
 import com.urbannightdev.cardiopp.helper.UserLoggedManager;
 import com.urbannightdev.cardiopp.model.UserInfoTable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -35,6 +37,11 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -45,6 +52,8 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.tiet_emailInput) EditText inputEmail;
     @BindView(R.id.tiet_passwordInput) EditText inputPassword;
     @BindView(R.id.tiet_noHpInput) EditText inputHandphone;
+    @BindView(R.id.etToken) EditText edittextToken;
+    @BindView(R.id.btnSubmitOTP) Button btnSubmitOTP;
 
     @BindView(R.id.btnCreateAccount) Button btnRegister;
 
@@ -64,6 +73,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private UserLoggedManager userLoggedManager;
 
     private ActionBar aksibar;
+
+    String tokenmu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +106,15 @@ public class RegistrationActivity extends AppCompatActivity {
 
 //        dialog = new SpotsDialog(RegistrationActivity.this, "Loading");
 //        dialog.setCancelable(false);
+
+        btnSubmitOTP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tokenmu = edittextToken.getText().toString().trim();
+                Location location = null;
+                new verifyOTP().execute(location);
+            }
+        });
     }
 
     @Override
@@ -105,6 +125,71 @@ public class RegistrationActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class verifyOTP extends AsyncTask<Location, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Location... locations) {
+
+            String tokensaya = "";
+
+            OkHttpClient clientToken = new OkHttpClient();
+
+            MediaType mediaTypeToken = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody bodyToken = RequestBody.create(mediaTypeToken, "grant_type=client_credentials");
+            Request requestToken = new Request.Builder()
+                    .url("https://api.mainapi.net/token")
+                    .post(bodyToken)
+                    .addHeader("Authorization", "Basic RWQwTDZCOVJPcHdTU242NnZWblVzZGo5MGFRYTpfVEx2TmpMRVBORVQwVjRyeWR4VHlFQm5ZNXNh") // get token
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "0803bf9d-0182-42a6-8a9b-c26113190a91")
+                    .build();
+
+            try {
+                Response response = clientToken.newCall(requestToken).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                tokensaya = jsonObject.getString("access_token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            String status = "";
+
+
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\r\n  \"otpstr\": \"" + tokenmu + "\",\r\n  \"digit\": 4,\r\n  \"maxAttempt\": 3,\r\n  \"expireIn\": 1000\r\n}"); // otpstr adalah angka khsusus, digit adalah digit anga khusus, maxAttempt sama kayak sebelumnya, expireIn sama kayak sebelumnya
+            Request request = new Request.Builder()
+                    .url("https://api.mainapi.net/smsotp/1.0.1/otp/keyBebasRahasia/verifications") // ganti "keyBebasRahasia" tapi harus sama dengan yang awal
+                    .post(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "Bearer " + tokensaya) // perbarui token
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "11dfb748-59ce-4195-9c83-228a1a77be5f")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject object = new JSONObject(response.body().string());
+                status = object.getString("status");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            showToast("sukses");
+            RegistrationActivity.this.finish();
+
+            return null;
+        }
     }
 
     private void generateDataForm() {
@@ -127,7 +212,8 @@ public class RegistrationActivity extends AppCompatActivity {
                         && !sHandphone.isEmpty()) {
                     if (isEmailValid(sEmail)) {
                         registerUser();
-                        finish();
+                        Location location = null;
+                        new SMSOTP().execute(location);
                     } else {
                         showToast("email tidak valid");
                     }
@@ -238,5 +324,64 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private void showToast(String s) {
         Toast.makeText(RegistrationActivity.this,s,Toast.LENGTH_LONG).show();
+    }
+
+    public class SMSOTP extends AsyncTask<Location, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Location... locations) {
+
+            String tokensaya = "";
+
+            OkHttpClient clientToken = new OkHttpClient();
+
+            MediaType mediaTypeToken = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody bodyToken = RequestBody.create(mediaTypeToken, "grant_type=client_credentials");
+            Request requestToken = new Request.Builder()
+                    .url("https://api.mainapi.net/token")
+                    .post(bodyToken)
+                    .addHeader("Authorization", "Basic RWQwTDZCOVJPcHdTU242NnZWblVzZGo5MGFRYTpfVEx2TmpMRVBORVQwVjRyeWR4VHlFQm5ZNXNh") // get token
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "0803bf9d-0182-42a6-8a9b-c26113190a91")
+                    .build();
+
+            try {
+                Response response = clientToken.newCall(requestToken).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                tokensaya = jsonObject.getString("access_token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+
+            OkHttpClient client = new OkHttpClient();
+
+            MediaType mediaType = MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(mediaType, "{\r\n  \"maxAttempt\": 3,\r\n  \"phoneNum\": \"+6285871547208\",\r\n  \"expireIn\": 1000,\r\n  \"digit\": 4\r\n}"); // max attempt diisi, phoneNum isi nomor tujuan, expireIn diisi, digit antara 4-10.
+            Request request = new Request.Builder()
+                    .url("https://api.mainapi.net/smsotp/1.0.1/otp/keyBebasRahasia") // ganti "keyBebasRahasia" tapi harus sama dengan yang akhir
+                    .put(body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Accept", "application/json")
+                    .addHeader("Authorization", "Bearer " + tokensaya) // perbarui token
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "649af415-100a-42dc-ba50-61c5745a5c3e")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

@@ -10,10 +10,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,12 +27,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +41,15 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.google.gson.Gson;
 import com.urbannightdev.cardiopp.Constant;
 import com.urbannightdev.cardiopp.R;
 import com.urbannightdev.cardiopp.adapter.RecyclerSaranKesehatan;
 import com.urbannightdev.cardiopp.model.SaranKesehatanModel;
+import com.urbannightdev.cardiopp.model.TMoneyModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -58,6 +62,11 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class HomePage extends AppCompatActivity {
 
@@ -71,10 +80,20 @@ public class HomePage extends AppCompatActivity {
     ImageView ivBluetooth;
     @BindView(R.id.ivSubscription)
     ImageView ivSubscription;
+    @BindView(R.id.ivMaps)
+    ImageView ivMaps;
     @BindView(R.id.linlay_toolbar)
     LinearLayout linlayToolbar;
     @BindView(R.id.linlayProfil)
     LinearLayout linlayProfil;
+    @BindView(R.id.tvSaldo)
+    TextView tvSaldo;
+    @BindView(R.id.edittexttoken)
+    EditText editTextTokenTMONey;
+    @BindView(R.id.btnCheckSaldo)
+    Button btnCheckSaldo;
+    @BindView(R.id.btnSetSaldo)
+    Button btnSetSaldo;
 
     private Toolbar myToolbar;
     private ActionBar aksibar;
@@ -126,13 +145,15 @@ public class HomePage extends AppCompatActivity {
 
     /** BLUETOOTH PAGE **/
 
-
+    String saldo = "";
     RecyclerView mRecyclerView;
     private RecyclerSaranKesehatan mRecyclerSaranKesehatan;
 
     private List<SaranKesehatanModel> mListSaranKesehatanModels;
 
     private BarChart barChart;
+
+    private boolean flagCheckSaldo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +166,8 @@ public class HomePage extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         ButterKnife.bind(this);
+
+        flagCheckSaldo = false;
 
         aksibar = HomePage.this.getSupportActionBar();
         assert aksibar != null;
@@ -159,6 +182,102 @@ public class HomePage extends AppCompatActivity {
         initializeDataSaranKesehatan();
 
         visualizeHistogram();
+
+        btnCheckSaldo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location location = null;
+                new checkSaldo().execute(location);
+
+                while (!flagCheckSaldo) {
+
+                }
+                setSaldo();
+            }
+        });
+
+        btnSetSaldo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setSaldo();
+            }
+        });
+        btnSetSaldo.setVisibility(View.GONE);
+    }
+
+    public class checkSaldo extends AsyncTask<Location, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Location... locations) {
+
+            String tokensaya = "";
+
+            OkHttpClient clientToken = new OkHttpClient();
+
+            MediaType mediaTypeToken = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody bodyToken = RequestBody.create(mediaTypeToken, "grant_type=client_credentials");
+            Request requestToken = new Request.Builder()
+                    .url("https://api.mainapi.net/token")
+                    .post(bodyToken)
+                    .addHeader("Authorization", "Basic RWQwTDZCOVJPcHdTU242NnZWblVzZGo5MGFRYTpfVEx2TmpMRVBORVQwVjRyeWR4VHlFQm5ZNXNh") // get token
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "0803bf9d-0182-42a6-8a9b-c26113190a91")
+                    .build();
+
+            try {
+                Response response = clientToken.newCall(requestToken).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                tokensaya = jsonObject.getString("access_token");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            String tokentmoney = "";
+            tokentmoney = editTextTokenTMONey.getText().toString().trim() ;
+
+            OkHttpClient client = new OkHttpClient();
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "userName=alhudaghifari%40gmail.com&password=T3lkom2018&terminal=WEB-TMONEY&apiKey=T-MONEY_Q0TlI0LTIz-PdztZoTRx3Dg7vs-tTU9O&datetime=2018-02-24%2023%3A00%3A00&signature=8ab1f609ff039f9fc199b2a9cc6f724884a921f925c3476c7c4e9a7c047c6df61bb3c7b1800f73930f327d851ec84782afa51287dbc5100b1bfcace17a2fe309");
+            Request request = new Request.Builder()
+                    .url("https://api.mainapi.net/tmoney/1.0.0-sandbox/sign-in")
+                    .post(body)
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Authorization", "Bearer " + tokentmoney) // perbarui token
+                    .addHeader("Cache-Control", "no-cache")
+                    .addHeader("Postman-Token", "8ab536f2-f0d8-40a8-9fcc-92f1482d829e")
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                String user = jsonObject.getString("user");
+
+                Gson gson = new Gson();
+                TMoneyModel tMoneyModel = gson.fromJson(user,
+                        TMoneyModel.class);
+
+
+                Log.d("HOMEPAGE", "json object : " + user);
+                JSONObject jsonObject2 = new JSONObject(user);
+                saldo = tMoneyModel.getBalance() + "";  //jsonObject.getString("balance");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            flagCheckSaldo = true;
+
+            return null;
+        }
+    }
+
+
+    public void setSaldo() {
+        tvSaldo.setText("Saldo anda : " + saldo);
     }
 
     @Override
@@ -234,6 +353,14 @@ public class HomePage extends AppCompatActivity {
     }
 
     private void initializeListener() {
+        ivMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomePage.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ivGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -419,11 +546,11 @@ public class HomePage extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_numbers);
         mListSaranKesehatanModels = new ArrayList<>();
         SaranKesehatanModel saranKesehatanModel1 =
-                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Lemah", "Perawatan : Perbanyak istirahat", "Spesialis : Hubungi dokter dan minum obat sesuai dengan resep yang diberikan");
         SaranKesehatanModel saranKesehatanModel2 =
-                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Penyempitan Pembuluh Darah", "", "Spesialis : Hubungi dokter jantung");
         SaranKesehatanModel saranKesehatanModel3 =
-                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : anda harus merawat diri", "Spesialis : banyakin lari, renang gitu lah");
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Gula Darah Tinggi", "Perawatan : Kurangi konsumsi gula", "Spesialis : Kurangi konsumsi makanan manis");
 
         mListSaranKesehatanModels.add(saranKesehatanModel1);
         mListSaranKesehatanModels.add(saranKesehatanModel2);
