@@ -88,4 +88,14 @@ public class RecyclerSaranKesehatan extends RecyclerView.Adapter<RecyclerView.Vi
             mTextViewSpesialis = (TextView) itemView.findViewById(R.id.tv_spesialis);
         }
     }
+
+
+    public void addNewData(SaranKesehatanModel list) {
+        mPackageDataList.add(list);
+        lengthOfData = mPackageDataList.size();
+    }
+
+    public void refreshRecyclerView() {
+        RecyclerSaranKesehatan.this.notifyDataSetChanged();
+    }
 }

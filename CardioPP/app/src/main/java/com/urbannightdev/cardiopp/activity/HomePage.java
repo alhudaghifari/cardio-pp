@@ -53,6 +53,7 @@ import com.urbannightdev.cardiopp.adapter.RecyclerSaranKesehatan;
 import com.urbannightdev.cardiopp.model.SaranKesehatanModel;
 import com.urbannightdev.cardiopp.model.TMoneyModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,6 +100,8 @@ public class HomePage extends AppCompatActivity {
     Button btnCheckSaldo;
     @BindView(R.id.btnSetSaldo)
     Button btnSetSaldo;
+    @BindView(R.id.tvJudulSaranKesehatan)
+    TextView tvJudulSaranKesehatan;
 
     private Toolbar myToolbar;
     private ActionBar aksibar;
@@ -160,6 +163,14 @@ public class HomePage extends AppCompatActivity {
 
     private boolean flagCheckSaldo;
 
+    private String penyakit;
+    private String saran = "Berolahragalah";
+    private String Spesialis = "Hubungi dokter jantung";
+
+    private boolean flagApiheart = false;
+
+    int angkaDataDummy = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,6 +199,9 @@ public class HomePage extends AppCompatActivity {
 
         visualizeHistogram();
 
+        Location location = new Location("");
+        new TakeDataKesehatan().execute(location);
+
         btnCheckSaldo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -208,6 +222,14 @@ public class HomePage extends AppCompatActivity {
             }
         });
         btnSetSaldo.setVisibility(View.GONE);
+        tvJudulSaranKesehatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Location location = new Location("");
+                new TakeDataKesehatan().execute(location);
+            }
+        });
+
     }
 
     public class checkSaldo extends AsyncTask<Location, Integer, Void> {
@@ -336,7 +358,7 @@ public class HomePage extends AppCompatActivity {
         int n;
         int mod;
 
-        for (int i=0;i<100;i++) {
+        for (int i=0;i<70;i++) {
             n = rand.nextInt(50) + 1;
             mod = rand.nextInt(30) + 1;
 
@@ -384,6 +406,61 @@ public class HomePage extends AppCompatActivity {
 
         barChart.invalidate();
 
+    }
+
+
+    public class TakeDataKesehatan extends AsyncTask<Location, Integer, Void> {
+        @Override
+        protected Void doInBackground(Location... void11) {
+
+            OkHttpClient clientToken = new OkHttpClient();
+
+            MediaType mediaTypeToken = MediaType.parse("application/json");
+
+            RequestBody bodyToken;
+
+            if (angkaDataDummy == 0) {
+                bodyToken = RequestBody.create(mediaTypeToken, "[37,1,171,85,94,148,377,142,81,30,-56.0,48.0,12.0,70.0,52,44,0,0,0,64,0,0,0,0,0,0,0,44,40,0,0,24,0,0,0,0,0,0,0,52,40,0,0,24,0,0,0,0,0,0,0.1,-7.4,1.9,0.0,0.0,0.0,-0.8,0.0,-15.1,-15.1,0.2,0.0,4.8,-1.0,0.0,0.0,0.4,0.5,8.5,11.3,-0.3,0.0,2.5,-1.1,0.0,0.0,0.6,-0.5,4.3,1.5]");
+            } else if (angkaDataDummy == 1) {
+                bodyToken = RequestBody.create(mediaTypeToken, "[71,1,156,56,78,195,331,148,102,62,15.0,74.0,54.0,98.0,52,28,0,0,0,56,0,0,0,0,0,0,0,52,32,0,0,32,0,0,0,0,0,0,0,76,0,0,0,28,0,0,0,0,0,0,0.2,-7.4,0.9,0.0,0.0,0.0,-0.7,-0.8,-18.0,-22.6,-0.3,0.0,1.5,-1.4,0.0,0.0,-0.5,0.5,1.7,4.7,0.0,0.0,6.0,0.0,0.0,0.0,1.1,0.4,22.8,24.5]");
+            } else if (angkaDataDummy == 2) {
+                bodyToken = RequestBody.create(mediaTypeToken, "[65,0,172,66,98,199,339,149,181,-4,136.0,34.0,13.0,102.0,48,52,0,0,0,56,0,0,0,0,0,0,0,92,0,0,0,32,0,0,0,0,0,0,0,44,56,0,0,28,0,0,0,0,0,0,0.5,-5.2,2.7,0.0,0.0,0.0,-0.5,0.1,-5.4,-4.8,-0.2,0.0,1.0,0.0,0.0,0.0,0.5,-0.3,4.6,2.6,-0.3,0.0,4.3,-3.5,0.0,0.0,0.3,0.2,-0.4,0.7]");
+            } else {
+                bodyToken = RequestBody.create(mediaTypeToken, "[63,0,175,80,97,147,370,170,93,-2,38.0,32.0,2.0,89.0,84,0,0,0,0,0,0,0,0,0,0,0,0,52,52,0,0,32,0,0,0,0,0,0,44,60,0,0,0,56,0,0,0,0,0,0,0.1,-6.3,0.0,0.0,0.0,0.0,-1.1,-0.4,-26.4,-27.5,-0.5,0.0,10.3,-3.5,0.0,0.0,0.9,0.2,17.6,18.1,0.4,-4.8,4.2,0.0,0.0,0.0,0.7,0.3,2.1,3.9]");
+            }
+
+            angkaDataDummy = (angkaDataDummy+1)%4;
+
+            Request requestToken = new Request.Builder()
+                    .url("http://52.230.87.136:5000/predict")
+                    .post(bodyToken)
+                    .build();
+
+            try {
+                Response response = clientToken.newCall(requestToken).execute();
+                JSONObject jsonObject = new JSONObject(response.body().string());
+                penyakit = jsonObject.getString("Penyakit");
+                saran = (jsonObject.has("Saran"))?jsonObject.getString("Saran"):"";
+                Spesialis = (jsonObject.has("Spesialis"))?jsonObject.getString("Spesialis"):"";
+
+//                String saran = jsonObject.getString("Saran");
+                Log.d("Homepage","Nama penyakit : " + penyakit);
+                Log.d("Homepage","Nama saran : " + saran);
+                Log.d("Homepage","Nama Spesialis : " + Spesialis);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addNewsDatasehat();
+                }
+            });
+            flagApiheart = true;
+            return null;
+        }
     }
 
     private void initializeListener() {
@@ -577,19 +654,27 @@ public class HomePage extends AppCompatActivity {
         }
     };
 
+    private void addNewsDatasehat() {
+        SaranKesehatanModel saranKesehatanModel1 =
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", penyakit, "Perawatan : " + saran, "Spesialis : " + Spesialis);
+
+        mRecyclerSaranKesehatan.addNewData(saranKesehatanModel1);
+        mRecyclerSaranKesehatan.refreshRecyclerView();
+    }
+
     private void initializeDataSaranKesehatan() {
         mRecyclerView = (RecyclerView) findViewById(R.id.rv_numbers);
         mListSaranKesehatanModels = new ArrayList<>();
         SaranKesehatanModel saranKesehatanModel1 =
-                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Lemah", "Perawatan : Perbanyak istirahat", "Spesialis : Hubungi dokter dan minum obat sesuai dengan resep yang diberikan");
+                new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Jantung Sehat", "Perawatan : Perbanyak istirahat", "Spesialis : Hubungi dokter dan minum obat sesuai dengan resep yang diberikan");
         SaranKesehatanModel saranKesehatanModel2 =
                 new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Penyempitan Pembuluh Darah", "", "Spesialis : Hubungi dokter jantung");
         SaranKesehatanModel saranKesehatanModel3 =
                 new SaranKesehatanModel("1","Anda sedang dalam kondisi :", "Gula Darah Tinggi", "Perawatan : Kurangi konsumsi gula", "Spesialis : Kurangi konsumsi makanan manis");
 
         mListSaranKesehatanModels.add(saranKesehatanModel1);
-        mListSaranKesehatanModels.add(saranKesehatanModel2);
-        mListSaranKesehatanModels.add(saranKesehatanModel3);
+//        mListSaranKesehatanModels.add(saranKesehatanModel2);
+//        mListSaranKesehatanModels.add(saranKesehatanModel3);
 
         final LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(HomePage.this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

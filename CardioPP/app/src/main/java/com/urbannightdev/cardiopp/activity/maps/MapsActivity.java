@@ -245,7 +245,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             client = new OkHttpClient();
 
             request = new Request.Builder()
-                    .url("https://api.mainapi.net/arcgis/0.0.2/35/query/1000?geometry=" + location.getLongitude() + "," + location.getLatitude())
+                    .url("https://api.mainapi.net/arcgis/0.0.2/35/query/1000?geometry=" + "107.617412" + "," + "-6.877258")
                     .get()
                     .addHeader("Authorization", "Bearer " + accessToken)
                     .addHeader("Cache-Control", "no-cache")

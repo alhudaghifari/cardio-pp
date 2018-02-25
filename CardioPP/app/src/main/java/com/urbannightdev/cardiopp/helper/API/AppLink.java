@@ -5,5 +5,5 @@ package com.urbannightdev.cardiopp.helper.API;
  */
 
 public class AppLink {
-    public static final String SERVER_LINK  = "http://52.230.87.136/";
+    public static final String SERVER_LINK  = "http://52.230.87.136:5000/";
 }
